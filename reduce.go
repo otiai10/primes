@@ -1,9 +1,5 @@
 package srime
 
-import (
-	"strconv"
-)
-
 type Reduced struct {
 	origin Fraction
 	result Fraction
@@ -18,5 +14,5 @@ func Reduce(numerator, denomirator int) *Reduced {
 }
 
 func (r *Reduced) String() string {
-	return strconv.Itoa(r.result.Numerator) + "/" + strconv.Itoa(r.result.Denomirator)
+	return r.result.String()
 }

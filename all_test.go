@@ -29,3 +29,7 @@ func TestFactorize(t *testing.T) {
 func TestReduce(t *testing.T) {
 	Expect(t, srime.Reduce(144, 360).String()).ToBe("2/5")
 }
+
+func TestFraction_Reduce(t *testing.T) {
+	Expect(t, srime.Fraction{144, 360}.Reduce().String()).ToBe("2/5")
+}

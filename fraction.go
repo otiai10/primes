@@ -2,6 +2,7 @@ package srime
 
 import (
 	"math"
+	"strconv"
 )
 
 type Fraction struct {
@@ -37,4 +38,8 @@ func (f Fraction) countCommonPowers(f1, f2 *Factors, factor int) float64 {
 		return float64(count1)
 	}
 	return float64(count2)
+}
+
+func (f Fraction) String() string {
+	return strconv.Itoa(f.Numerator) + "/" + strconv.Itoa(f.Denomirator)
 }
