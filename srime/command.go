@@ -17,8 +17,12 @@ func getCommand() Command {
 		return &cHello{}
 	}
 	switch args[0] {
-	case "reduce":
+	case "reduce", "r":
 		return &cReduce{}
+	case "factors", "f":
+		return &cFactors{}
+	case "primes", "p":
+		return &cPrimes{}
 	}
 	return &cHello{}
 }
