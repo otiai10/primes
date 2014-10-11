@@ -1,4 +1,4 @@
-package srime
+package sprime
 
 import (
 	"math"

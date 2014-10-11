@@ -1,4 +1,4 @@
-package srime
+package sprime
 
 type Reduced struct {
 	origin Fraction

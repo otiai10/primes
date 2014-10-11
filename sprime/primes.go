@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/otiai10/srime"
+	"github.com/otiai10/sprime"
 	"strconv"
 )
 
@@ -13,7 +13,7 @@ type cPrimes struct {
 func (c *cPrimes) Prepare() {
 	args := getArgs()
 	if len(args) < 2 {
-		invalid("`primes` needs second arg like `srime primes 12`.")
+		invalid("`primes` needs second arg like `sprime primes 12`.")
 		return
 	}
 	if !numericExp.MatchString(args[1]) {
@@ -26,5 +26,5 @@ func (c *cPrimes) Prepare() {
 }
 
 func (c *cPrimes) Perform() {
-	fmt.Println(srime.FindPrimesUntil(c.limit))
+	fmt.Println(sprime.FindPrimesUntil(c.limit))
 }
