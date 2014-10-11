@@ -22,7 +22,20 @@ func (f *Factors) classify(possiblePrime int) {
 
 func (f *Factors) register(factor int) {
 	f.list = append(f.list, factor)
-	f.dict[factor] = factor
+	f.dict[factor] = f.TimesOf(factor)
+}
+
+func (f *Factors) TimesOf(factor int) int {
+	times := 0
+	_tmp := int(f.of)
+	for {
+		if _tmp%factor != 0 {
+			break
+		}
+		times++
+		_tmp = _tmp / factor
+	}
+	return times
 }
 
 func (f *Factors) List() []int {
@@ -31,4 +44,11 @@ func (f *Factors) List() []int {
 
 func (f *Factors) Dict() map[int]int {
 	return f.dict
+}
+
+func (f *Factors) Has(num int) bool {
+	if _, ok := f.Dict()[num]; ok {
+		return true
+	}
+	return false
 }

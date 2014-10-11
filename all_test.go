@@ -18,10 +18,14 @@ func TestFactorize(t *testing.T) {
 		[]int{2, 5},
 	)
 	Expect(t, srime.Factorize(10).Dict()).ToBe(
-		map[int]int{2: 2, 5: 5},
+		map[int]int{2: 1, 5: 1},
 	)
 
 	Expect(t, srime.Factorize(351).List()).ToBe(
 		[]int{3, 13},
 	)
+}
+
+func TestReduce(t *testing.T) {
+	Expect(t, srime.Reduce(144, 360).String()).ToBe("2/5")
 }
