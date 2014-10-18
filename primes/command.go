@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"os"
+	"log"
 )
 
 type Command interface {
@@ -12,7 +12,7 @@ type Command interface {
 
 func getCommand() Command {
 	flag.Parse()
-	args := getArgs()
+	args := flag.Args()
 	if len(args) == 0 {
 		return &cHello{}
 	}
@@ -27,11 +27,8 @@ func getCommand() Command {
 	return &cHello{}
 }
 
-func getArgs() []string {
-	return flag.Args()
-}
+type cBase struct{}
 
-func invalid(mess string) {
-	os.Stderr.Write([]byte(mess))
-	os.Exit(1)
+func (c *cBase) invalid(mess string) {
+	log.Fatalln(mess)
 }

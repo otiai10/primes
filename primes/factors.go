@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/otiai10/primes"
 	"regexp"
@@ -8,19 +9,21 @@ import (
 )
 
 type cFactors struct {
+	*cBase
 	origin int
+	dict   bool
 }
 
 var numericExp = regexp.MustCompile("([0-9]+)")
 
 func (c *cFactors) Prepare() {
-	args := getArgs()
+	args := flag.Args()
 	if len(args) < 2 {
-		invalid("`factors` needs second arg like `primes factors 12`.")
+		c.invalid("`factors` needs second arg like `primes factors 12`.")
 		return
 	}
 	if !numericExp.MatchString(args[1]) {
-		invalid("`factors` arg must be number expression like `12345`.")
+		c.invalid("`factors` arg must be number expression like `12345`.")
 		return
 	}
 	m := numericExp.FindStringSubmatch(args[1])
