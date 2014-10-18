@@ -1,4 +1,4 @@
-package sprime
+package primes
 
 import (
 	"math"

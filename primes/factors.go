@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/otiai10/sprime"
+	"github.com/otiai10/primes"
 	"regexp"
 	"strconv"
 )
@@ -16,7 +16,7 @@ var numericExp = regexp.MustCompile("([0-9]+)")
 func (c *cFactors) Prepare() {
 	args := getArgs()
 	if len(args) < 2 {
-		invalid("`factors` needs second arg like `sprime factors 12`.")
+		invalid("`factors` needs second arg like `primes factors 12`.")
 		return
 	}
 	if !numericExp.MatchString(args[1]) {
@@ -29,5 +29,5 @@ func (c *cFactors) Prepare() {
 }
 
 func (c *cFactors) Perform() {
-	fmt.Println(sprime.Factorize(float64(c.origin)).List())
+	fmt.Println(primes.Factorize(float64(c.origin)).List())
 }

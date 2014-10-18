@@ -1,4 +1,4 @@
-package sprime
+package primes
 
 type Factors struct {
 	of   float64
