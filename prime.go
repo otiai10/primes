@@ -1,49 +1,64 @@
 package primes
 
-type Prime int
-
-func (p Prime) canDevide(num int) bool {
-	return num%int(p) == 0
-}
-
+// Primes represents prime numbers
 type Primes struct {
-	list []int
+	target int64
+	field  map[int64]bool
+	list   []int64
 }
 
-func (ps *Primes) register(num int) {
-	ps.list = append(ps.list, num)
+// Until finds
+func Until(n int64) *Primes {
+	p := new(Primes)
+	p.target = n
+	p.field = map[int64]bool{}
+
+	for i := 2; int64(i) <= p.target; i++ {
+		p.field[int64(i)] = false
+	}
+
+	for i := 2; int64(i) <= p.target; i++ {
+		j := int64(i)
+		if p.has(j) {
+			continue
+		}
+		if p.canDevide(j) {
+			continue
+		}
+		p.add(j)
+	}
+	return p
 }
 
-func (ps *Primes) canDevide(num int) bool {
-	for _, prime := range ps.list {
-		if Prime(prime).canDevide(num) {
+func (p *Primes) canDevide(i int64) bool {
+	for _, f := range p.list {
+		if i%f == 0 {
 			return true
 		}
 	}
 	return false
 }
 
-func (ps *Primes) classify(num int) {
-	// TODO: use goroutine to speedup
-	if !ps.canDevide(num) {
-		ps.register(num)
+func (p *Primes) has(i int64) bool {
+	marked, ok := p.field[i]
+	if !ok {
+		return false
+	}
+	return marked
+}
+
+func (p *Primes) add(i int64) {
+	// register this number
+	p.list = append(p.list, i)
+	// mark this number
+	p.field[i] = true
+	// mark multiples of this number
+	for j := 2; i*int64(j) < p.target; j++ {
+		p.field[i*int64(j)] = true
 	}
 }
 
-func (ps *Primes) out() []int {
-	return ps.list
-}
-
-func FindPrimesUntil(limit int) []int {
-	if limit < 2 {
-		return []int{}
-	}
-	primes := &Primes{list: []int{2}}
-	if limit < 3 {
-		return primes.out()
-	}
-	for i := 3; i < limit; i += 2 {
-		primes.classify(i)
-	}
-	return primes.out()
+// List returns all found primes
+func (p *Primes) List() []int64 {
+	return p.list
 }

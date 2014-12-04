@@ -1,35 +1,45 @@
-package primes_test
+package primes
 
 import (
-	. "github.com/otiai10/mint"
-	"github.com/otiai10/primes"
 	"testing"
+
+	. "github.com/otiai10/mint"
 )
 
-func TestFindPrimesUntil(t *testing.T) {
-	Expect(t, primes.FindPrimesUntil(10)).TypeOf("[]int")
-	Expect(t, primes.FindPrimesUntil(10)).ToBe(
-		[]int{2, 3, 5, 7},
-	)
+func TestUntil(t *testing.T) {
+	p := Until(10)
+	Expect(t, p).TypeOf("*primes.Primes")
+	Expect(t, p.List()).ToBe([]int64{2, 3, 5, 7})
 }
 
 func TestFactorize(t *testing.T) {
-	Expect(t, primes.Factorize(10).List()).ToBe(
-		[]int{2, 5},
-	)
-	Expect(t, primes.Factorize(10).Dict()).ToBe(
-		map[int]int{2: 1, 5: 1},
-	)
-
-	Expect(t, primes.Factorize(351).List()).ToBe(
-		[]int{3, 13},
-	)
+	f := Factorize(100)
+	Expect(t, f).TypeOf("*primes.Factors")
+	Expect(t, f.All()).ToBe([]int64{2, 2, 5, 5})
+	f = Factorize(1000)
+	Expect(t, f.All()).ToBe([]int64{2, 2, 2, 5, 5, 5})
+	f = Factorize(144)
+	Expect(t, f.All()).ToBe([]int64{2, 2, 2, 2, 3, 3})
 }
 
-func TestReduce(t *testing.T) {
-	Expect(t, primes.Reduce(144, 360).String()).ToBe("2/5")
+func TestParseFractionString(t *testing.T) {
+	fr, err := ParseFractionString("144/1024")
+	Expect(t, err).ToBe(nil)
+	Expect(t, fr).TypeOf("*primes.Fraction")
 }
 
 func TestFraction_Reduce(t *testing.T) {
-	Expect(t, primes.Fraction{144, 360}.Reduce().String()).ToBe("2/5")
+	fr, err := ParseFractionString("10/100")
+	Expect(t, err).ToBe(nil)
+	Expect(t, fr.Reduce(-1).String()).ToBe("1/10")
+
+	fr, _ = ParseFractionString("144/360")
+
+	Expect(t, fr.Reduce(-1).String()).ToBe("2/5")
+	Expect(t, fr.Reduce(0).String()).ToBe("144/360")
+	Expect(t, fr.Reduce(1).String()).ToBe("72/180")
+	Expect(t, fr.Reduce(2).String()).ToBe("36/90")
+	Expect(t, fr.Reduce(3).String()).ToBe("18/45")
+	Expect(t, fr.Reduce(4).String()).ToBe("6/15")
+	Expect(t, fr.Reduce(5).String()).ToBe("2/5")
 }

@@ -1,45 +1,69 @@
 package primes
 
 import (
-	"math"
+	"fmt"
+	"regexp"
 	"strconv"
 )
 
+// Fraction represents fraction
 type Fraction struct {
-	Numerator   int
-	Denomirator int
+	numerator   int64
+	denominator int64
+	commons     *Factors
+	before      *Fraction
 }
 
-func (f Fraction) Reduce() Fraction {
-	for _, common := range f.FindCommonFactors() {
-		f.Numerator = f.Numerator / common
-		f.Denomirator = f.Denomirator / common
+var fractionLikeExp = regexp.MustCompile("^([0-9]+)/([0-9]+)$")
+
+// ParseFractionString parses and initializes Fraction from string
+func ParseFractionString(fractionLike string) (*Fraction, error) {
+	f := new(Fraction)
+	matches := fractionLikeExp.FindStringSubmatch(fractionLike)
+	if len(matches) != 3 {
+		return f, fmt.Errorf("failed to parse string `%s` to fraction", fractionLike)
 	}
+	num, err := strconv.Atoi(matches[1])
+	if err != nil {
+		return f, err
+	}
+	den, err := strconv.Atoi(matches[2])
+	if err != nil {
+		return f, err
+	}
+	return Fractionize(int64(num), int64(den)), nil
+}
+
+// Fractionize ...
+func Fractionize(num, den int64) *Fraction {
+	f := new(Fraction)
+	f.numerator = num
+	f.denominator = den
+
+	f.commons = Commons(
+		Factorize(f.numerator),
+		Factorize(f.denominator),
+	)
+
 	return f
 }
 
-func (f Fraction) FindCommonFactors() (commons []int) {
-	factorsOfN := Factorize(float64(f.Numerator))
-	factorsOfD := Factorize(float64(f.Denomirator))
-	for _, factor := range factorsOfN.List() {
-		if factorsOfD.Has(factor) {
-			pow := f.countCommonPowers(factorsOfN, factorsOfD, factor)
-			commons = append(commons, int(math.Pow(float64(factor), pow)))
-		}
+// Reduce recuces this fraction
+func (fr *Fraction) Reduce(times int) *Fraction {
+	if times == 0 {
+		return fr
 	}
-	return commons
+	if len(fr.commons.All()) == 0 {
+		return fr
+	}
+	c := fr.commons.All()[0]
+	next := Fractionize(fr.numerator/c, fr.denominator/c)
+	next.before = fr
+	times--
+	return next.Reduce(times)
 }
 
-// FIXME: better way?
-func (f Fraction) countCommonPowers(f1, f2 *Factors, factor int) float64 {
-	count1 := f1.Dict()[factor]
-	count2 := f2.Dict()[factor]
-	if count1 < count2 {
-		return float64(count1)
-	}
-	return float64(count2)
-}
-
-func (f Fraction) String() string {
-	return strconv.Itoa(f.Numerator) + "/" + strconv.Itoa(f.Denomirator)
+// String ...
+func (fr *Fraction) String() string {
+	return fmt.Sprintf("%d/%d", fr.numerator, fr.denominator)
 }
