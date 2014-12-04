@@ -3,16 +3,16 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/otiai10/primes"
 	"regexp"
-	"strconv"
+
+	"github.com/otiai10/primes"
 )
 
 var fractionExp = regexp.MustCompile("([0-9]+)/([0-9]+)")
 
 type cReduce struct {
 	*cBase
-	fraction primes.Fraction
+	fraction *primes.Fraction
 }
 
 func (c *cReduce) Prepare() {
@@ -20,15 +20,13 @@ func (c *cReduce) Prepare() {
 	if len(args) < 2 {
 		c.invalid("`reduce` needs second arg like `primes reduce 144/360`.")
 	}
-	if !fractionExp.MatchString(args[1]) {
-		c.invalid("`reduce` arg must be fraction expression like `144/360`.")
+	fraction, err := primes.ParseFractionString(args[1])
+	if err != nil {
+		c.invalid(err.Error())
 	}
-	m := fractionExp.FindStringSubmatch(args[1])
-	nume, _ := strconv.Atoi(m[1])
-	deno, _ := strconv.Atoi(m[2])
-	c.fraction = primes.Fraction{nume, deno}
+	c.fraction = fraction
 }
 
 func (c *cReduce) Perform() {
-	fmt.Println(c.fraction.Reduce().String())
+	fmt.Println(c.fraction.Reduce(-1).String())
 }

@@ -3,15 +3,15 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/otiai10/primes"
 	"regexp"
 	"strconv"
-	"strings"
+
+	"github.com/otiai10/primes"
 )
 
 type cFactors struct {
 	*cBase
-	origin int
+	origin int64
 	dict   bool
 }
 
@@ -28,28 +28,16 @@ func (c *cFactors) Prepare() {
 		return
 	}
 	m := numericExp.FindStringSubmatch(args[1])
-	num, _ := strconv.Atoi(m[1])
+	num, _ := strconv.ParseInt(m[1], 10, 64)
 	c.origin = num
 
-	flag.BoolVar(&c.dict, "dict", true, "-dict options shows also times of factors")
 }
 
 func (c *cFactors) Perform() {
-	factors := primes.Factorize(float64(c.origin))
+	factors := primes.Factorize(c.origin)
 	if c.dict {
-		fmt.Println(c.expressDict(factors.Dict()))
+		fmt.Println(factors.Powers())
 	} else {
-		fmt.Println(c.expressList(factors.List()))
+		fmt.Println(factors.All())
 	}
-}
-
-func (c *cFactors) expressDict(dict map[int]int) string {
-	var pool = []string{}
-	for i, v := range dict {
-		pool = append(pool, fmt.Sprintf("%d^%d", i, v))
-	}
-	return "[" + strings.Join(pool, " ") + "]"
-}
-func (c *cFactors) expressList(list []int) string {
-	return fmt.Sprintln(list)
 }

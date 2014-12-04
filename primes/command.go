@@ -5,6 +5,7 @@ import (
 	"log"
 )
 
+// Command interface
 type Command interface {
 	Prepare()
 	Perform()

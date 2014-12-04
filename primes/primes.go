@@ -3,13 +3,14 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/otiai10/primes"
 	"strconv"
+
+	"github.com/otiai10/primes"
 )
 
 type cPrimes struct {
 	*cBase
-	limit int
+	limit int64
 }
 
 func (c *cPrimes) Prepare() {
@@ -21,10 +22,10 @@ func (c *cPrimes) Prepare() {
 		c.invalid("`primes` arg must be number expression like `12345`.")
 	}
 	m := numericExp.FindStringSubmatch(args[1])
-	num, _ := strconv.Atoi(m[1])
+	num, _ := strconv.ParseInt(m[1], 10, 64)
 	c.limit = num
 }
 
 func (c *cPrimes) Perform() {
-	fmt.Println(primes.FindPrimesUntil(c.limit))
+	fmt.Println(primes.Until(c.limit).List())
 }
