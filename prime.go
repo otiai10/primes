@@ -10,6 +10,10 @@ type Primes struct {
 // Until finds prime numbers until specified number.
 func Until(n int64) *Primes {
 
+	if known := globally.Knows(n); known != nil {
+		return known
+	}
+
 	p := initializeUntil(n)
 
 	var i int64 = 2
@@ -25,6 +29,8 @@ func Until(n int64) *Primes {
 		// and multiples of this number are no longer needless to be eveluated
 		p.add(i)
 	}
+
+	globally.Learns(p)
 
 	return p
 }
