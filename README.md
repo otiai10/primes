@@ -1,4 +1,4 @@
-primes  [![GoDoc](https://godoc.org/github.com/otiai10/primes?status.svg)](https://godoc.org/github.com/otiai10/primes)
+primes  [![GoDoc](https://godoc.org/github.com/otiai10/primes?status.svg)](https://godoc.org/github.com/otiai10/primes) [![Circle CI](https://circleci.com/gh/otiai10/primes.svg?style=svg)](https://circleci.com/gh/otiai10/primes)
 ==========
 
 - Find primary numbers
