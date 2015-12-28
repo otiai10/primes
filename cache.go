@@ -8,14 +8,14 @@ var globally = &cache{
 	store: map[int64]*Primes{},
 }
 
-func (c *cache) Knows(target int64) *Primes {
+func (c *cache) Know(target int64) *Primes {
 	if p, ok := c.store[target]; ok {
 		return p
 	}
 	return nil
 }
 
-func (c *cache) Learns(primes *Primes) error {
+func (c *cache) Learn(primes *Primes) error {
 	c.store[primes.target] = primes
 	return nil
 }
