@@ -13,6 +13,13 @@ var Globally = &cache{
 	list:  list.New(),
 }
 
+func (c *cache) Clear() {
+	c = &cache{
+		store: map[int64]*Primes{},
+		list:  list.New(),
+	}
+}
+
 func (c *cache) Know(target int64) *Primes {
 	if p, ok := c.store[target]; ok {
 		return p
