@@ -14,10 +14,8 @@ var Globally = &cache{
 }
 
 func (c *cache) Clear() {
-	c = &cache{
-		store: map[int64]*Primes{},
-		list:  list.New(),
-	}
+	c.store = map[int64]*Primes{}
+	c.list = list.New()
 }
 
 func (c *cache) Know(target int64) *Primes {
@@ -48,6 +46,9 @@ func (c *cache) Until(n int64) *Primes {
 	base := c.Persist(n)
 
 	i := base.target
+	if i == 1 {
+		i = 2
+	}
 	p := extends(base, n)
 
 	for ; i <= p.target; i++ {
