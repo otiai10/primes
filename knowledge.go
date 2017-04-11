@@ -4,6 +4,7 @@ import "container/list"
 
 // Knowledge ...
 type Knowledge interface {
+	Init() error
 	Know(int64) *Primes
 	Learn(*Primes) Knowledge
 	Until(int64) *Primes
@@ -16,10 +17,16 @@ type OnMemoryKnowledge struct {
 	list  *list.List
 }
 
-// Clear ...
-func (m *OnMemoryKnowledge) Clear() {
+// Init ...
+func (m *OnMemoryKnowledge) Init() error {
 	m.store = map[int64]*Primes{}
 	m.list = list.New()
+	return nil
+}
+
+// Clear ...
+func (m *OnMemoryKnowledge) Clear() {
+	m.Init()
 }
 
 // Know for interface `Knowledge`.
