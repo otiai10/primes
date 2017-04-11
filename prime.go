@@ -10,7 +10,7 @@ type Primes struct {
 // Until finds prime numbers until specified number.
 func Until(n int64) *Primes {
 
-	if known := Globally.Know(n); known != nil {
+	if known := knowledge.Know(n); known != nil {
 		return known
 	}
 
@@ -30,7 +30,7 @@ func Until(n int64) *Primes {
 		p.add(i)
 	}
 
-	Globally.Learn(p)
+	knowledge.Learn(p)
 
 	return p
 }

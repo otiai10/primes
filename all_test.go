@@ -12,8 +12,8 @@ func TestUntil(t *testing.T) {
 	Expect(t, p.List()).ToBe([]int64{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97})
 }
 
-func TestGlobally_Until(t *testing.T) {
-	p := Globally.Until(100)
+func TestKnowledge_Until(t *testing.T) {
+	p := knowledge.Until(100)
 	Expect(t, p).TypeOf("*primes.Primes")
 	Expect(t, p.List()).ToBe([]int64{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97})
 }

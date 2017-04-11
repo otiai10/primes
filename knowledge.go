@@ -5,10 +5,10 @@ import "container/list"
 // Knowledge ...
 type Knowledge interface {
 	Init() error
+	Clear() error
 	Know(int64) *Primes
 	Learn(*Primes) Knowledge
 	Until(int64) *Primes
-	Clear()
 }
 
 // OnMemoryKnowledge ...
@@ -25,8 +25,8 @@ func (m *OnMemoryKnowledge) Init() error {
 }
 
 // Clear ...
-func (m *OnMemoryKnowledge) Clear() {
-	m.Init()
+func (m *OnMemoryKnowledge) Clear() error {
+	return m.Init()
 }
 
 // Know for interface `Knowledge`.
@@ -76,7 +76,7 @@ func (m *OnMemoryKnowledge) Until(n int64) *Primes {
 		p.add(i)
 	}
 
-	Globally.Learn(p)
+	m.Learn(p)
 
 	return p
 }
@@ -104,16 +104,21 @@ func clone(base *Primes, target int64) *Primes {
 	return p
 }
 
-// Globally ...
-var Globally = &OnMemoryKnowledge{
-	store: map[int64]*Primes{},
-	list:  list.New(),
-}
-
 func extends(base *Primes, target int64) *Primes {
 	p := new(Primes)
 	p.target = target
 	p.dictionary = base.dictionary
 	p.list = base.list
 	return p
+}
+
+var knowledge Knowledge = &OnMemoryKnowledge{
+	store: map[int64]*Primes{},
+	list:  list.New(),
+}
+
+// UseKnowledge ...
+func UseKnowledge(k Knowledge) error {
+	knowledge = k
+	return knowledge.Init()
 }
