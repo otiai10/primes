@@ -16,7 +16,7 @@ type Factors struct {
 func Factorize(num int64) *Factors {
 	f := &Factors{of: num, list: []int64{}, dict: map[int64]int{}}
 	//for _, prime := range Until(f.of).List() {
-	for _, prime := range Globally.Until(f.of).List() {
+	for _, prime := range Until(f.of).List() {
 		if f.of%prime == 0 {
 			f.add(prime)
 		}

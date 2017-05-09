@@ -2,7 +2,7 @@ package primes
 
 // Primes represents prime numbers
 type Primes struct {
-	target     int64
+	Target     int64
 	dictionary map[int64]bool
 	list       []int64
 }
@@ -10,15 +10,17 @@ type Primes struct {
 // Until finds prime numbers until specified number.
 func Until(n int64) *Primes {
 
-	if known := Globally.Know(n); known != nil {
-		return known
+	if knowledge != nil {
+		if known := knowledge.Know(n); known != nil {
+			return knowledge.Know(n)
+		}
 	}
 
 	p := initializeUntil(n)
 
 	var i int64 = 2
 
-	for ; i <= p.target; i++ {
+	for ; i <= p.Target; i++ {
 		if p.knows(i) {
 			continue // needless to evaluate.
 		}
@@ -30,7 +32,9 @@ func Until(n int64) *Primes {
 		p.add(i)
 	}
 
-	Globally.Learn(p)
+	if knowledge != nil {
+		knowledge.Learn(p)
+	}
 
 	return p
 }
@@ -41,10 +45,10 @@ func Until(n int64) *Primes {
 // as meaning "it's not prime".
 func initializeUntil(n int64) *Primes {
 	p := new(Primes)
-	p.target = n
+	p.Target = n
 	p.dictionary = map[int64]bool{}
 
-	for i := 2; int64(i) <= p.target; i++ {
+	for i := 2; int64(i) <= p.Target; i++ {
 		p.dictionary[int64(i)] = false
 	}
 	return p
@@ -84,7 +88,7 @@ func (p *Primes) add(i int64) {
 	p.dictionary[i] = true
 	// mark multiples of this number
 	// to make better `Sieve of Eratosthenes`
-	for j := 2; i*int64(j) < p.target; j++ {
+	for j := 2; i*int64(j) < p.Target; j++ {
 		p.dictionary[i*int64(j)] = true
 	}
 }
