@@ -15,3 +15,9 @@ var knowledge Knowledge = &EmptyKnowledge{}
 func Ask(k Knowledge) {
 	knowledge = k
 }
+
+// Forget forgets all knowledge.
+func Forget() {
+	// knowledge.Flush()
+	knowledge = new(EmptyKnowledge)
+}
