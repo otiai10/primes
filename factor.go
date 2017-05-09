@@ -29,6 +29,7 @@ func (f *Factors) add(factor int64) {
 	f.dict[factor] = f.HasPowersOf(factor)
 }
 
+// HasPowersOf returns if it has powers of given factor number.
 func (f *Factors) HasPowersOf(factor int64) int {
 	if f.of%factor != 0 {
 		return 0
