@@ -7,13 +7,24 @@ type Primes struct {
 	list       []int64
 }
 
+// NewPrimes ...
+func NewPrimes(t int64, l []int64) *Primes {
+	return &Primes{
+		Target: t,
+		list:   l,
+	}
+}
+
 // Until finds prime numbers until specified number.
 func Until(n int64) *Primes {
 
-	if knowledge != nil {
-		if known := knowledge.Know(n); known != nil {
-			return knowledge.Know(n)
-		}
+	if err := knowledge.Open(); err != nil {
+		panic(err)
+	}
+	defer knowledge.Close()
+
+	if known := knowledge.Know(n); known != nil {
+		return knowledge.Know(n)
 	}
 
 	p := initializeUntil(n)
