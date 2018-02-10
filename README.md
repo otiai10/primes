@@ -23,15 +23,19 @@ package main
 
 import (
 	"fmt"
-	"github.com/otiai10/primes" // :$ go get github.com/otiai10/primes/primes
+
+	"github.com/otiai10/primes"
 )
 
 func main() {
 	fmt.Println(
-	primes.Factorize(144).All(),
-	primes.Factorize(144).Powers(),)
-	}
+		primes.Until(20).List(),
+		primes.Factorize(144).All(),
+		primes.Factorize(144).Powers(),
+	)
+}
 
+// [2 3 5 7 11 13 17 19]
 // [2 2 2 2 3 3]
 // map[2:4 3:2]
 ```
