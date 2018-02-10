@@ -1,43 +1,30 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"regexp"
 	"strconv"
 
+	"github.com/otiai10/jsonindent"
 	"github.com/otiai10/primes"
+	"github.com/urfave/cli"
 )
-
-type cFactors struct {
-	*cBase
-	origin int64
-	dict   bool
-}
 
 var numericExp = regexp.MustCompile("([0-9]+)")
 
-func (c *cFactors) Prepare() {
-	args := flag.Args()
-	if len(args) < 2 {
-		c.invalid("`factors` needs second arg like `primes factors 12`.")
-		return
+var factorize = func(ctx *cli.Context) error {
+	if len(ctx.Args()) == 0 {
+		return fmt.Errorf("`factorize` needs second arg like `primes f 12`")
 	}
-	if !numericExp.MatchString(args[1]) {
-		c.invalid("`factors` arg must be number expression like `12345`.")
-		return
+	num, err := strconv.ParseInt(ctx.Args().First(), 10, 64)
+	if err != nil {
+		return err
 	}
-	m := numericExp.FindStringSubmatch(args[1])
-	num, _ := strconv.ParseInt(m[1], 10, 64)
-	c.origin = num
-
-}
-
-func (c *cFactors) Perform() {
-	factors := primes.Factorize(c.origin)
-	if c.dict {
-		fmt.Println(factors.Powers())
-	} else {
+	factors := primes.Factorize(num)
+	if !ctx.Bool("json") {
 		fmt.Println(factors.All())
+		return nil
 	}
+	dict := factors.Powers()
+	return jsonindent.NewEncoder(ctx.App.Writer).Encode(dict)
 }

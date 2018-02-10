@@ -1,32 +1,23 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"regexp"
 
 	"github.com/otiai10/primes"
+	"github.com/urfave/cli"
 )
 
 var fractionExp = regexp.MustCompile("([0-9]+)/([0-9]+)")
 
-type cReduce struct {
-	*cBase
-	fraction *primes.Fraction
-}
-
-func (c *cReduce) Prepare() {
-	args := flag.Args()
-	if len(args) < 2 {
-		c.invalid("`reduce` needs second arg like `primes reduce 144/360`.")
+var reduce = func(ctx *cli.Context) error {
+	if len(ctx.Args()) == 0 {
+		return fmt.Errorf("`reduce` needs second arg like `primes r 144/360`")
 	}
-	fraction, err := primes.ParseFractionString(args[1])
+	fraction, err := primes.ParseFractionString(ctx.Args().First())
 	if err != nil {
-		c.invalid(err.Error())
+		return err
 	}
-	c.fraction = fraction
-}
-
-func (c *cReduce) Perform() {
-	fmt.Println(c.fraction.Reduce(-1).String())
+	fmt.Println(fraction.Reduce(-1).String())
+	return nil
 }
