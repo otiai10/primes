@@ -18,11 +18,20 @@ primes  [![GoDoc](https://godoc.org/github.com/otiai10/primes?status.svg)](https
 ```
 
 - all can be executed in go code
-```go
-fmt.Println(
-        sprime.Factorize(144).All(),
-        sprime.Factorize(144).Powers(),
+```
+package main
+
+import (
+	"fmt"
+	"github.com/otiai10/primes" // :$ go get github.com/otiai10/primes/primes
 )
+
+func main() {
+	fmt.Println(
+	primes.Factorize(144).All(),
+	primes.Factorize(144).Powers(),)
+	}
+
 // [2 2 2 2 3 3]
 // map[2:4 3:2]
 ```
