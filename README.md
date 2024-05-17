@@ -3,7 +3,7 @@ primes
 
 [![Go](https://github.com/otiai10/primes/actions/workflows/go.yml/badge.svg)](https://github.com/otiai10/primes/actions/workflows/go.yml)
 [![GoDoc](https://godoc.org/github.com/otiai10/primes?status.svg)](https://godoc.org/github.com/otiai10/primes)
-[![codecov](https://codecov.io/gh/otiai10/primes/branch/master/graph/badge.svg)](https://codecov.io/gh/otiai10/primes)
+[![codecov](https://codecov.io/gh/otiai10/primes/graph/badge.svg?token=KhbXXMd6Lj)](https://codecov.io/gh/otiai10/primes)
 
 - Find primary numbers
 ```sh
